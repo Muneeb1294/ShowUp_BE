@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { getFrontendUrl } from './utils/frontendUrl.js';
 import { createTables } from './utils/createTables.js';
 import { errorMiddleware } from './middlewares/errorMiddleware.js';
 import authRoutes from './router/authRoutes.js';
@@ -12,7 +13,7 @@ import categoryRoutes from './router/categoryRoutes.js';
 const app = express();
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: getFrontendUrl(),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));

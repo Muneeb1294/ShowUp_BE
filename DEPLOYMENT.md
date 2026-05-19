@@ -12,7 +12,7 @@ Repo: **ShowUp_BE** — Express API at repo root.
 
 | Variable | Value |
 |----------|--------|
-| `FRONTEND_URL` | Vercel URL, e.g. `https://showup.vercel.app` |
+| `FRONTEND_URL` | `https://show-up-fe.vercel.app` |
 | `JWT_SECRET_KEY` | Long random string |
 | `JWT_EXPIRES_IN` | `7d` |
 | `GITHUB_CLIENT_ID` | GitHub OAuth app |

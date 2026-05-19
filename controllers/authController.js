@@ -11,18 +11,14 @@ import {
     getGithubAuthorizeUrl,
     fetchGithubProfile,
 } from "../services/githubAuthService.js";
-
-function frontendUrl(path = "") {
-    const base = (process.env.FRONTEND_URL || "http://localhost:5173").replace(/\/$/, "");
-    return `${base}${path}`;
-}
+import { getFrontendUrl } from "../utils/frontendUrl.js";
 
 function redirectWithError(message, redirectTo = "/login") {
     const params = new URLSearchParams({
         error: message,
         redirect: redirectTo,
     });
-    return `${frontendUrl("/auth/callback")}?${params}`;
+    return `${getFrontendUrl("/auth/callback")}?${params}`;
 }
 
 function redirectWithToken(token, redirectTo) {
@@ -30,7 +26,7 @@ function redirectWithToken(token, redirectTo) {
         token,
         redirect: redirectTo,
     });
-    return `${frontendUrl("/auth/callback")}?${params}`;
+    return `${getFrontendUrl("/auth/callback")}?${params}`;
 }
 
 function oauthErrorMessage(err) {
