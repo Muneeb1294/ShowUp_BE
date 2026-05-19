@@ -48,7 +48,20 @@ npm run dev
 git -C ../showup-back-end push origin main
 ```
 
+## GitHub OAuth App (developer settings)
+
+In [GitHub → Settings → Developer settings → OAuth Apps](https://github.com/settings/developers), edit your ShowUp app:
+
+| Field | Value |
+|--------|--------|
+| **Homepage URL** | `https://show-up-fe.vercel.app` |
+| **Authorization callback URL** | `https://showupbe-production.up.railway.app/api/v1/auth/github/callback` |
+
+The callback URL must match `GITHUB_CALLBACK_URL` on Railway **exactly** (https, no trailing slash on the path).
+
+After sign-in, GitHub redirects to the **backend** callback; the API then redirects to `FRONTEND_URL/auth/callback` with the JWT.
+
 ## Verify
 
-- `https://<railway-domain>/api-docs` — Swagger UI
-- GitHub OAuth callback must match `GITHUB_CALLBACK_URL` exactly
+- `https://showupbe-production.up.railway.app/api-docs` — Swagger UI
+- `curl -I "https://showupbe-production.up.railway.app/api/v1/auth/github"` — should `302` to `github.com`

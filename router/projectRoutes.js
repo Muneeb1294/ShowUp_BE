@@ -5,6 +5,7 @@ import {
     getFeaturedProjects,
     getProjectById,
     getPendingProjects,
+    getReviewedProjects,
     getPinnedProjects,
     approveProject,
     rejectProject,
@@ -33,6 +34,7 @@ router.post("/", ...userOnly, createProject);
 router.get("/", optionalAuth, getProjects);
 router.get("/featured", optionalAuth, getFeaturedProjects);
 router.get("/pending", ...admin, getPendingProjects);
+router.get("/reviewed", ...admin, getReviewedProjects);
 router.get("/pinned", isAuthenticated, getPinnedProjects);
 
 router.patch("/:id/approve", ...admin, approveProject);

@@ -258,6 +258,49 @@ export const getProjectById = catchAsyncError(async (req, res, next) => {
     res.status(200).json({ success: true, project: result.rows[0] });
 });
 
+export const getReviewedProjects = catchAsyncError(async (req, res) => {
+    const page = getPage(req);
+    const offset = (page - 1) * PAGE_SIZE;
+
+    const statusFilter =
+        req.query.status === "approved" || req.query.status === "rejected"
+            ? req.query.status
+            : null;
+
+    const conditions = ["p.status IN ('approved', 'rejected')"];
+    const params = [];
+
+    if (statusFilter) {
+        params.push(statusFilter);
+        conditions.push(`p.status = $${params.length}`);
+    }
+
+    const where = `WHERE ${conditions.join(" AND ")}`;
+
+    const [countResult, projectsResult] = await Promise.all([
+        database.query(
+            `SELECT COUNT(*) FROM projects p ${where}`,
+            params
+        ),
+        database.query(
+            `${PENDING_PROJECT_SELECT}
+             ${where}
+             ORDER BY COALESCE(p.reviewed_at, p.created_at) DESC
+             LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
+            [...params, PAGE_SIZE, offset]
+        ),
+    ]);
+
+    const total = parseInt(countResult.rows[0].count, 10) || 0;
+    const pagination = buildPaginationMeta(total, page);
+
+    res.status(200).json({
+        success: true,
+        ...pagination,
+        projects: projectsResult.rows,
+    });
+});
+
 export const getPendingProjects = catchAsyncError(async (req, res) => {
     const page = getPage(req);
     const offset = (page - 1) * PAGE_SIZE;
@@ -322,7 +365,8 @@ export const approveProject = catchAsyncError(async (req, res, next) => {
     if (!isValidProjectId(id, next)) return;
 
     const result = await database.query(
-        `UPDATE projects SET status = 'approved', rejection_note = NULL
+        `UPDATE projects SET status = 'approved', rejection_note = NULL,
+                reviewed_at = CURRENT_TIMESTAMP
          WHERE id = $1 AND status = 'pending'
          RETURNING *`,
         [id]
@@ -345,7 +389,8 @@ export const rejectProject = catchAsyncError(async (req, res, next) => {
             : null;
 
     const result = await database.query(
-        `UPDATE projects SET status = 'rejected', rejection_note = $2
+        `UPDATE projects SET status = 'rejected', rejection_note = $2,
+                reviewed_at = CURRENT_TIMESTAMP
          WHERE id = $1 AND status = 'pending'
          RETURNING *`,
         [id, rejectionNote]

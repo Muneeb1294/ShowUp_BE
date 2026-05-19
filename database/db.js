@@ -6,7 +6,6 @@ dotenv.config();
 const { Client } = pkg;
 
 function getDbConfig() {
-  console.log(process.env.DATABASE_URL);
   if (process.env.DATABASE_URL) {
     return {
       connectionString: process.env.DATABASE_URL,

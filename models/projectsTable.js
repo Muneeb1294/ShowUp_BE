@@ -33,6 +33,9 @@ created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         await database.query(
             "ALTER TABLE projects ADD COLUMN IF NOT EXISTS owner_avatar_url TEXT"
         );
+        await database.query(
+            "ALTER TABLE projects ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMP"
+        );
     } catch (error) {
         console.error("❌ Failed To Create Projects Table.", error);
         process.exit(1);
