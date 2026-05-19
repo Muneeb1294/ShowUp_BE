@@ -12,8 +12,20 @@ import categoryRoutes from './router/categoryRoutes.js';
 
 const app = express();
 
+const productionOrigin = getFrontendUrl();
+const vercelPreviewOrigin = /^https:\/\/show-up-.*\.vercel\.app$/i;
+
 app.use(cors({
-    origin: getFrontendUrl(),
+    origin(origin, callback) {
+        if (!origin) return callback(null, true);
+        if (origin === productionOrigin || vercelPreviewOrigin.test(origin)) {
+            return callback(null, true);
+        }
+        if (/^http:\/\/localhost(:\d+)?$/i.test(origin)) {
+            return callback(null, true);
+        }
+        return callback(null, false);
+    },
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
