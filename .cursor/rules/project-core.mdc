@@ -1,0 +1,11 @@
+---
+description: Core ShowUp standards — minimal diffs, readable code, MVP scope
+alwaysApply: true
+---
+
+# ShowUp — Core
+
+- Keep changes small and readable; match patterns in nearby files
+- Ship the smallest correct change; skip unrelated refactors
+- Prefer simple functions over extra abstractions or layers
+- Never commit secrets; do not expose tokens or `.env` values in client code

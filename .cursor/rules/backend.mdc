@@ -1,0 +1,28 @@
+---
+description: Node, Express, and PostgreSQL conventions for ShowUp server code
+globs: server/**
+alwaysApply: false
+---
+
+# ShowUp — Backend
+
+## Layout
+
+- Routes: `server/router/{domain}Routes.js` → register in `server/app.js` under `/api/v1/...`
+- Controllers: named exports wrapped with `catchAsyncError`
+- Tables: `server/models/*Table.js` → register in `server/utils/createTables.js`
+- DB access: parameterized SQL only via `server/database/db.js`
+
+## API
+
+- Success: `{ success: true, ...data }`
+- Validation/errors: `return next(new ErrorHandler(message, statusCode))`
+- Auth stacks: `isAuthenticated`, `authorizedRoles('admin'|'user')`, `optionalAuth` on public reads that need user context
+- Request JSON: camelCase; DB columns: snake_case; strip secrets with `sanitizeUser()` before returning users
+
+## Conventions
+
+- ES modules (`import`/`export`); `async/await` only
+- Project moderation lives on `/api/v1/projects`; admin router is users, categories, dashboard
+- GitHub: validate repo URLs before API calls; `GITHUB_TOKEN` server-side only
+- Add `@openapi` comments when other routes in the same router file use them

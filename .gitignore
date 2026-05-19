@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+*.env
+config/config.env
+
+node_modules/
+uploads/
+
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+*.pem
+*.key
+.id_rsa*
+*.p12
+**/secrets.json

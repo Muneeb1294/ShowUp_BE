@@ -1,0 +1,26 @@
+---
+description: React and Vite conventions for ShowUp client code
+globs: client/**
+alwaysApply: false
+---
+
+# ShowUp — Frontend
+
+## Layout
+
+- Pages: `client/src/pages/`; shared UI: `client/src/components/`
+- API modules: `client/src/api/{domain}.js` using `client/src/api/axios.js`
+- Auth: `AuthContext` + `client/src/lib/authStorage.js` (JWT in localStorage)
+
+## Patterns
+
+- Functional components; local `useState`/`useEffect` — no global store
+- API helpers check `success` and throw on failure; pages catch and display errors
+- Route guards: `UserRoute` (blocks admins from `/submit`), `AdminRoute` (admin only)
+- Dev proxy: Vite forwards `/api` to port 4000; paths use `/api/v1/...`
+- Tailwind v4 via Vite plugin; minimal UI; reuse `components/Layout/`
+
+## UI
+
+- Prioritize functionality over polish
+- Reuse existing card, form, and layout components before adding new ones
