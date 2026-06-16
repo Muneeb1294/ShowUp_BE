@@ -3,8 +3,14 @@ import { existsSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
-const envPath = join(dirname(fileURLToPath(import.meta.url)), "config.env");
+const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
+const configEnv = join(rootDir, "config", "config.env");
+const envLocal = join(rootDir, ".env.local");
 
-if (existsSync(envPath)) {
-  config({ path: envPath });
+if (existsSync(configEnv)) {
+  config({ path: configEnv });
+}
+
+if (existsSync(envLocal)) {
+  config({ path: envLocal, override: true });
 }
