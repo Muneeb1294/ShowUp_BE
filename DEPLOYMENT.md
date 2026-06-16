@@ -23,7 +23,7 @@ Each route group is deployed as its own serverless function under `api/` (see [t
 | `JWT_EXPIRES_IN` | `7d` |
 | `GITHUB_CLIENT_ID` | GitHub OAuth app |
 | `GITHUB_CLIENT_SECRET` | GitHub OAuth app |
-| `GITHUB_CALLBACK_URL` | `https://<your-vercel-domain>/api/v1/auth/github/callback` |
+| `GITHUB_CALLBACK_URL` | `https://showupbe.vercel.app/api/v1/auth/github/callback` |
 | `GITHUB_TOKEN` | Optional |
 | `NODE_ENV` | `production` |
 
@@ -33,7 +33,7 @@ After the first deploy, run table setup once (locally with production `DATABASE_
 DATABASE_URL="postgresql://..." npm run setup-db
 ```
 
-Update the frontend `VITE_API_URL` to your Vercel backend URL.
+Update the frontend `VITE_API_URL` to `https://showupbe.vercel.app` (see `showup-front-end/.env.production`).
 
 ### Serverless functions
 
@@ -52,14 +52,14 @@ Rewrites are configured in `vercel.json`. Free plan allows up to 12 functions pe
 | Field | Value |
 |--------|--------|
 | **Homepage URL** | `https://show-up-fe.vercel.app` |
-| **Authorization callback URL** | `https://<your-vercel-domain>/api/v1/auth/github/callback` |
+| **Authorization callback URL** | `https://showupbe.vercel.app/api/v1/auth/github/callback` |
 
 Must match `GITHUB_CALLBACK_URL` exactly (https, no trailing slash on the path).
 
 ### Verify
 
-- `https://<your-vercel-domain>/api-docs` — Swagger UI
-- `curl -I "https://<your-vercel-domain>/api/v1/auth/github"` — should `302` to `github.com`
+- `https://showupbe.vercel.app/api-docs` — Swagger UI
+- `curl -I "https://showupbe.vercel.app/api/v1/auth/github"` — should `302` to `github.com`
 
 ---
 
