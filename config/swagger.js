@@ -11,6 +11,9 @@ const options = {
         },
         servers: [
             { url: "http://localhost:4000", description: "Local dev server" },
+            ...(process.env.VERCEL_URL
+                ? [{ url: `https://${process.env.VERCEL_URL}`, description: "Vercel deployment" }]
+                : []),
         ],
         components: {
             securitySchemes: {
